@@ -233,6 +233,27 @@
       transform: translateY(-1px);
     }
 
+    /* resume button in nav */
+    .nav-resume {
+      background: #1d4057;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid #2f6b8a;
+      transition: all 0.3s ease;
+    }
+    .nav-resume:hover {
+      background: #264b66;
+      border-color: #4a8bb3;
+      transform: scale(1.02);
+    }
+    .nav-resume a {
+      border-bottom: none !important;
+      color: #b3d9f0;
+    }
+    .nav-resume a::after {
+      display: none;
+    }
+
     /* ----- hero ----- */
     .hero {
       display: flex;
@@ -387,6 +408,7 @@
     .project-item:nth-child(8) { animation-delay: 0.40s; }
     .project-item:nth-child(9) { animation-delay: 0.45s; }
     .project-item:nth-child(10) { animation-delay: 0.50s; }
+    .project-item:nth-child(11) { animation-delay: 0.55s; }
 
     .project-item::before {
       content: '';
@@ -569,6 +591,34 @@
       transform: translateY(-2px);
     }
 
+    /* resume download button (prominent) */
+    .resume-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #1d4057;
+      padding: 0.5rem 1.8rem;
+      border-radius: 60px;
+      border: 1px solid #3f8bb3;
+      font-weight: 600;
+      color: #b3d9f0;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+      box-shadow: 0 2px 12px rgba(0, 20, 40, 0.4);
+      border-bottom: none !important;
+    }
+    .resume-download-btn:hover {
+      background: #264b66;
+      border-color: #5baedb;
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 6px 20px rgba(0, 40, 80, 0.4);
+    }
+    .resume-download-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
     footer {
       margin-top: 2.2rem;
       text-align: center;
@@ -606,6 +656,7 @@
       nav { width: 100%; justify-content: flex-start; gap: 0.6rem 1.2rem; }
       .contact-links { flex-direction: column; align-items: flex-start; border-radius: 1.5rem; }
       .project-item { padding: 1.2rem; }
+      .resume-download-btn { padding: 0.4rem 1.2rem; font-size: 0.9rem; }
     }
 
     @media (max-width: 450px) {
@@ -636,6 +687,7 @@
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
+      <span class="nav-resume"><a href="resume.pdf" download>📄 Resume</a></span>
     </nav>
   </header>
 
@@ -652,6 +704,10 @@
       <div class="hero-links">
         <a href="https://linkedin.com/in/keerti-j-m/" target="_blank">🔗 LinkedIn</a>
         <a href="mailto:keertijm11@gmail.com">✉️ Email Me</a>
+        <!-- Resume download in hero as well -->
+        <a href="resume.pdf" download class="resume-download-btn" style="border-bottom: none; background: #1d4057; padding: 0.3rem 1.6rem; border-radius: 60px; border: 1px solid #3f8bb3; display: inline-flex; align-items: center; gap: 0.4rem;">
+          ⬇️ Resume
+        </a>
       </div>
     </div>
     <div class="hero-img">
@@ -785,12 +841,12 @@
       <p><strong>Learnings:</strong> Sensor fusion, robotics control, and embedded system integration.</p>
     </div>
     <!-- 11 -->
-<div class="project-item">
-  <h3>11. Arbitrary Precision Calculator (APC)</h3>
-  <p>Developed a Big Integer Calculator using doubly linked lists to represent and manipulate arbitrarily large integers, supporting addition, subtraction, multiplication, and division with high accuracy.</p>
-  <p><strong>Technologies:</strong> C, Data Structures, Doubly Linked List, Dynamic Memory Allocation</p>
-  <p><strong>Learnings:</strong> Modular arithmetic functions, optimized linked list operations, pointer manipulation, algorithm design, debugging, and efficient data structure implementation.</p>
-</div>
+    <div class="project-item">
+      <h3>11. Arbitrary Precision Calculator (APC)</h3>
+      <p>Developed a Big Integer Calculator using doubly linked lists to represent and manipulate arbitrarily large integers, supporting addition, subtraction, multiplication, and division with high accuracy.</p>
+      <p><strong>Technologies:</strong> C, Data Structures, Doubly Linked List, Dynamic Memory Allocation</p>
+      <p><strong>Learnings:</strong> Modular arithmetic functions, optimized linked list operations, pointer manipulation, algorithm design, debugging, and efficient data structure implementation.</p>
+    </div>
 
   </section>
   <!-- ========== END PROJECTS ========== -->
@@ -820,7 +876,7 @@
     <div class="contact-links">
       <p>📧 <a href="mailto:keertijm11@gmail.com">keertijm11@gmail.com</a></p>
       <p>📞 <a href="tel:+919743327494">9743327494</a></p>
-      <p>🔗 <a href="#" target="_blank">linkedin.com/in/keerti-j-m</a></p>
+      <p>🔗 <a href="https://linkedin.com/in/keerti-j-m/" target="_blank">linkedin.com/in/keerti-j-m</a></p>
     </div>
   </section>
 
@@ -840,18 +896,20 @@
 
     // 1. Smooth scroll for nav links (enhances default)
     document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId && targetId.startsWith('#')) {
-          e.preventDefault();
-          const target = document.querySelector(targetId);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // update URL hash without jump
-            history.pushState(null, null, targetId);
+      // skip resume download link
+      if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) {
+        link.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(targetId);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              history.pushState(null, null, targetId);
+            }
           }
-        }
-      });
+        });
+      }
     });
 
     // 2. Intersection Observer for scroll-reveal effect on project items & edu
@@ -859,22 +917,19 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          // optionally stop observing after reveal
           observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 
-    // observe project items and edu items (they already have animation, but we add fallback)
     document.querySelectorAll('.project-item, .edu-item, .contact-links, footer').forEach(el => {
-      // add class for observer if not already visible
       if (!el.classList.contains('visible')) {
         el.classList.add('scroll-reveal');
         observer.observe(el);
       }
     });
 
-    // 3. dynamic year in footer (optional)
+    // 3. dynamic year in footer
     const footerYear = document.querySelector('footer p');
     if (footerYear) {
       const currentYear = new Date().getFullYear();
@@ -893,16 +948,17 @@
       container.style.setProperty('--bg-offset-y', moveY + 'px');
     });
 
-    // 5. add a subtle mouse-follow glow on cards
+    // 5. card glow effect
     document.querySelectorAll('.project-item, .edu-item, .contact-links').forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
         const y = (e.clientY - rect.top) / rect.height;
-        const glow = card.querySelector('.card-glow') || (() => {
-          const g = document.createElement('div');
-          g.className = 'card-glow';
-          g.style.cssText = `
+        let glow = card.querySelector('.card-glow');
+        if (!glow) {
+          glow = document.createElement('div');
+          glow.className = 'card-glow';
+          glow.style.cssText = `
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -913,16 +969,14 @@
             z-index: 1;
           `;
           card.style.position = 'relative';
-          card.appendChild(g);
-          return g;
-        })();
-        if (glow) {
+          card.appendChild(glow);
+        } else {
           glow.style.background = `radial-gradient(circle at ${x*100}% ${y*100}%, rgba(60,130,180,0.08) 0%, transparent 70%)`;
         }
       });
     });
 
-    console.log('✨ Portfolio enhanced with JS animations ✨');
+    console.log('✨ Portfolio enhanced with Resume download & JS animations ✨');
   })();
 </script>
 
